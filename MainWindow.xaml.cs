@@ -1,17 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Net;
 using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace GitImgs
 {
@@ -24,5 +16,78 @@ namespace GitImgs
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            GetUrl();
+        }
+
+        private void GetUrl()
+        {
+            WebClient webClient = new WebClient();
+            webClient.Encoding = Encoding.UTF8;
+            String strhtml = webClient.DownloadString(this.gitUrl.Text);
+
+
+            Regex reg = new Regex(@"(?is)<a[^>]*?href=(['""\s]?)(?<href>[^'""\s]*)\1[^>]*?>");
+            MatchCollection match = reg.Matches(strhtml);
+            StringBuilder stringBuilder = new StringBuilder();
+
+            List<string> urlList = new List<string>();
+            foreach (Match m in match)
+            {
+                String href = m.Groups["href"].Value;
+                if (System.IO.Path.GetExtension(href) == ".png" || System.IO.Path.GetExtension(href) == ".jpg")
+                {
+                    String fileName = System.IO.Path.GetFileName(href);
+
+                    Boolean isFound = false;
+                    foreach (var img in urlList)
+                    {
+                        if (fileName == img)
+                        {
+                            isFound = true;
+                            break;
+                        }
+                    }
+
+                    if (isFound == false)
+                    {
+                        urlList.Add(fileName);
+                    }
+                }
+            }
+
+            //乱序
+            Shuffle(ref urlList);
+
+            foreach (var img in urlList)
+            {
+                String href = @"<li><img src=""https://raw.githubusercontent.com/zmrbak/PcWeChatHooK/master/%E5%90%8C%E5%AD%A6%E8%AF%84%E4%BB%B7/" + img + @""" width=""398""><br/>";
+
+                stringBuilder.Append(href).AppendLine();
+            }
+
+            this.imagText.Text = stringBuilder.ToString();
+        }
+
+        public void Shuffle<T>(ref List<T> list)
+        {
+            Random rand = new Random(Guid.NewGuid().GetHashCode());
+
+            //儲存結果的集合
+            List<T> newList = new List<T>();
+            foreach (T item in list)
+            {
+                newList.Insert(rand.Next(0, newList.Count), item);
+            }
+            //移除list[0]的值
+            newList.Remove(list[0]);
+
+            //再重新隨機插入第一筆
+            newList.Insert(rand.Next(0, newList.Count), list[0]);
+            list = newList;
+        }
     }
 }
+

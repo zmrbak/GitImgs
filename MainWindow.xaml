@@ -5,8 +5,31 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GitImgs"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="GitHub图片分析" Height="450" Width="800">
+    <DockPanel>
+        <DockPanel Margin="5" DockPanel.Dock="Top">
+            <TextBlock Text="图片目录" 
+                       DockPanel.Dock="Left" 
+                       Margin="5" 
+                       Padding="5"/>
+            <Button Content="开始分析" 
+                    Click="Button_Click" 
+                    DockPanel.Dock="Right" 
+                    Margin="5" 
+                    Width="100" 
+                    Padding="5"/>
+            <TextBox x:Name="gitUrl" 
+                     Margin="5" 
+                     Padding="5" 
+                     Text="https://github.com/zmrbak/PcWeChatHooK/tree/master/%E5%AD%A6%E5%91%98%E8%AF%84%E4%BB%B7"/>
+        </DockPanel>
+        <TextBox x:Name="imagText" 
+                 AcceptsReturn="True" 
+                 TextWrapping="Wrap"
+                 HorizontalScrollBarVisibility="Auto" 
+                 VerticalScrollBarVisibility="Auto"
+                 Margin="5"
+                 Padding="5"
+                 />
+    </DockPanel>
 </Window>
