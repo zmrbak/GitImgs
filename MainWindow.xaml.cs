@@ -61,9 +61,14 @@ namespace GitImgs
             //乱序
             Shuffle(ref urlList);
 
+            String imageUrl = this.gitUrl.Text;
+            imageUrl = imageUrl.Replace("https://github.com", "https://raw.githubusercontent.com");
+            imageUrl= imageUrl.Replace("tree/master/", "master/");
+            imageUrl = imageUrl.Trim('/');
+
             foreach (var img in urlList)
             {
-                String href = @"<li><img src=""https://raw.githubusercontent.com/zmrbak/PcWeChatHooK/master/%E5%90%8C%E5%AD%A6%E8%AF%84%E4%BB%B7/" + img + @""" width=""398""><br/>";
+                String href = @"<li><img src="""+ imageUrl + "/" + img + @"""><br/>";
 
                 stringBuilder.Append(href).AppendLine();
             }
