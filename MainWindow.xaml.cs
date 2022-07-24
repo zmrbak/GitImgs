@@ -17,6 +17,8 @@ namespace GitImgs
             InitializeComponent();
         }
 
+
+        
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             GetUrl();
@@ -61,14 +63,18 @@ namespace GitImgs
             //乱序
             Shuffle(ref urlList);
 
+
+            //raw url
+            //https://github.com/zmrbak/WebApi/tree/main/%E5%90%8C%E5%AD%A6%E8%AF%84%E4%BB%B7
+            //image url
+            //https://github.com/zmrbak/WebApi/blob/main/%E5%90%8C%E5%AD%A6%E8%AF%84%E4%BB%B7/Screenshot_2022-07-23-15-02-43-69_149003a2d400f6a.jpg?raw=true
             String imageUrl = this.gitUrl.Text;
-            imageUrl = imageUrl.Replace("https://github.com", "https://raw.githubusercontent.com");
-            imageUrl= imageUrl.Replace("tree/master/", "master/");
+            imageUrl = imageUrl.Replace("/tree/main/", "/blob/main/");
             imageUrl = imageUrl.Trim('/');
 
             foreach (var img in urlList)
             {
-                String href = @"<li><img src="""+ imageUrl + "/" + img + @"""><br/>";
+                String href = @"<li><img src="""+ imageUrl + "/" + img + "?raw=true" + @"""><br/>";
 
                 stringBuilder.Append(href).AppendLine();
             }
